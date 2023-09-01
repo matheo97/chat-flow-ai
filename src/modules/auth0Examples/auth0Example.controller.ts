@@ -6,7 +6,6 @@ export class Auth0ExamplesController {
   constructor() {}
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
   getHello(): string {
     return 'Hello World!';
   }
