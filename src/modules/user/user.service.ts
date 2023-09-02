@@ -52,9 +52,6 @@ export class UserService {
 
   async save(user: User, companyId: string): Promise<User> {
     const existingUser = await this.getUserByEmail(user.email, companyId);
-    console.log('existingUser', existingUser);
-    console.log('user.email', user.email);
-    console.log('companyId', companyId);
 
     if (existingUser) {
       throw new NotFoundException(
