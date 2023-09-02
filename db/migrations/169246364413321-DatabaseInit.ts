@@ -86,6 +86,11 @@ export class DatabaseInit169246364413321 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'password',
+            type: 'varchar',
+            length: '100',
+          },
+          {
             name: 'company_id',
             type: 'uuid',
             isNullable: false,

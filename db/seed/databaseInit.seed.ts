@@ -1,3 +1,7 @@
+import { genSaltSync, hashSync } from 'bcryptjs';
+
+const salt = genSaltSync(+process.env.PASSWORD_SALT_ROUNDS);
+
 export const companySeed = [
   {
     id: 'cb9dee02-c7b1-4d7c-9b2c-253176e04a32',
@@ -16,5 +20,6 @@ export const userSeed = [
     role: 'admin',
     phone: '9876543212',
     companyId: 'cb9dee02-c7b1-4d7c-9b2c-253176e04a32',
+    password: hashSync('chatflowia', salt),
   },
 ];

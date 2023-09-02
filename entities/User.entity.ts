@@ -11,7 +11,6 @@ import {
   IsUUID,
   IsOptional,
   Length,
-  IsPhoneNumber,
   IsHash,
 } from 'class-validator';
 import {
@@ -56,6 +55,18 @@ export class User extends Auditable {
   @Length(2, 60)
   @Type(() => String)
   role: string;
+
+  @Column()
+  @IsOptional()
+  @IsHash('sha256')
+  @Length(8, 100)
+  @ApiProperty({
+    description: 'Password for the user',
+    nullable: true,
+    type: String,
+  })
+  @Exclude({ toPlainOnly: true })
+  password?: string;
 
   @Column({ name: 'company_id' })
   @IsOptional()
