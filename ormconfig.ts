@@ -7,7 +7,6 @@ const env = process.env.NODE_ENV;
 
 export const connectionSource = new DataSource({
   migrationsTableName: 'migrations',
-  driver: 'postgres',
   type: 'postgres',
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),

@@ -1,18 +1,30 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Auth0ExampleModule, AuthorizationModule } from './src/modules';
-
-const typeormConfig = require('./ormconfig.js');
-
-require('dotenv').config();
-
-const env = process.env.NODE_ENV;
-
+import entities from './entities';
 @Module({
   imports: [
-    TypeOrmModule.forRoot(typeormConfig),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        migrationsTableName: 'migrations',
+        type: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USER'),
+        password: configService.get('DB_PASSWORD'),
+        database:
+          configService.get('NODE_ENV') === 'test'
+            ? configService.get('DB_TEST_DATABASE')
+            : configService.get('DB_DATABASE'),
+        entities: entities,
+        synchronize: false,
+        logging: true,
+      }),
+      inject: [ConfigService],
+    }),
     AuthorizationModule,
     Auth0ExampleModule,
   ],
